@@ -22,3 +22,23 @@ jobs:
     - name: node lint
       run:
         yarn lint:ci
+
+  typescript-tests:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: install node_modules
+        run: yarn install --frozen-lockfile
+
+      - name: test typescript
+        run:
+          yarn test:typescript
